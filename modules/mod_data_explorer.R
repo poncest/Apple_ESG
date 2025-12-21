@@ -1,6 +1,5 @@
 ## modules/mod_data_explorer.R
 ## Data Explorer Module - Interactive table with filters and download
-## Purpose: transparency + analyst drill-down (consulting-safe wording)
 
 # ============================================================================
 # MODULE UI
@@ -22,28 +21,17 @@ data_explorer_ui <- function(id) {
           "Data Explorer",
           div(
             class = "sub header",
-            "Filter, inspect, and export the rows used in this analysis"
+            "Interactive table with filters and download options"
           )
         )
       )
-    ),
-    
-    # Quick framing (lightweight, non-chart)
-    div(
-      style = "margin: 0 0 1.25em 0; padding: 0.75em 1em;
-           background-color: #F8F9F8;
-           border-left: 3px solid #B5B5B5;
-           font-size: 0.95em; color: #3C3C3C;",
-      tags$strong("So what: "),
-      "This tab is about transparency. Use it to validate what’s driving a number, ",
-      "trace a spike to specific categories, and export a filtered view for follow-up."
     ),
     
     # Filters Row
     div(
       class = "ui segment",
       
-      h4("Filters"),
+      h4("Filter Data"),
       
       div(
         class = "ui form",
@@ -53,7 +41,7 @@ data_explorer_ui <- function(id) {
           # Year range filter
           div(
             class = "field",
-            tags$label("Year range"),
+            tags$label("Year Range"),
             uiOutput(ns("filter_years"))
           ),
           
@@ -71,12 +59,6 @@ data_explorer_ui <- function(id) {
             uiOutput(ns("filter_scope"))
           )
         )
-      ),
-      
-      div(
-        style = "margin-top: 0.5em; font-size: 0.85em; color: #6C6C6C;",
-        tags$strong("Note: "),
-        "Totals below reflect the sum of the rows currently shown (post-filter)."
       )
     ),
     
@@ -93,11 +75,11 @@ data_explorer_ui <- function(id) {
       
       div(
         style = "display: flex; justify-content: space-between; align-items: center; margin-bottom: 1em;",
-        h4("Emissions detail", style = "margin: 0;"),
+        h4("Emissions Data", style = "margin: 0;"),
         div(
           downloadLink(
             ns("download_csv"),
-            label = tagList(icon("download"), "Download filtered CSV"),
+            label = tagList(icon("download"), " Download CSV"),
             class = "ui primary button"
           )
         )
@@ -110,20 +92,25 @@ data_explorer_ui <- function(id) {
     div(
       class = "data-notes",
       style = "margin-top: 2em;",
-      tags$strong("About this table"),
+      tags$strong("About This Data"),
       br(), br(),
+      tags$strong("Columns:"),
       tags$ul(
-        tags$li(tags$strong("Fiscal year:"), " Apple fiscal year (Oct–Sep)."),
-        tags$li(tags$strong("Category:"), " Corporate operations vs. product life cycle."),
-        tags$li(tags$strong("Scope:"), " GHG Protocol classification (Scope 1/2/3)."),
-        tags$li(tags$strong("Description:"), " The reporting line item (e.g., Manufacturing, Product use)."),
-        tags$li(tags$strong("Gross emissions:"), " Reported emissions before removals (tCO₂e)."),
-        tags$li(tags$strong("Net emissions:"), " Reported emissions after removals (tCO₂e).")
+        tags$li(tags$strong("Fiscal Year:"), " Apple's fiscal year (October-September)"),
+        tags$li(tags$strong("Category:"), " Corporate emissions vs. Product life cycle emissions"),
+        tags$li(tags$strong("Scope:"), " Scope 1 (direct), Scope 2 (electricity), Scope 3 (indirect)"),
+        tags$li(tags$strong("Description:"), " Specific emission source"),
+        tags$li(tags$strong("Type:"), " Gross emissions vs. Carbon removals (offsets)"),
+        tags$li(tags$strong("Emissions:"), " Metric tons CO₂ equivalent (tCO₂e)")
       ),
-      tags$p(
-        style = "font-style: italic; color: #6C6C6C; margin-top: 1em;",
-        "Source: Apple Inc. Environmental Progress Reports (FY2015–FY2022). Data compiled by Maven Analytics."
-      )
+      br(),
+      tags$strong("Methodology:"),
+      br(),
+      "Emissions data compiled from Apple's annual Environmental Progress Reports. ",
+      "Scope 3 estimates rely on supplier disclosures and lifecycle assessment models. ",
+      "Market-based Scope 2 reflects renewable energy procurement contracts.",
+      br(), br(),
+      tags$em(DATA_SOURCE)
     )
   )
 }
@@ -139,8 +126,10 @@ data_explorer_server <- function(id, app_data) {
     # Filter Controls
     # ========================================================================
     
+    # Year range slider
     output$filter_years <- renderUI({
       ns <- session$ns
+      
       sliderInput(
         ns("year_range"),
         label = NULL,
@@ -152,27 +141,36 @@ data_explorer_server <- function(id, app_data) {
       )
     })
     
+    # Category dropdown
     output$filter_category <- renderUI({
       ns <- session$ns
+      
       selectInput(
         ns("category_filter"),
         label = NULL,
         choices = c(
-          "All categories" = "all",
-          "Corporate emissions" = "Corporate emissions",
-          "Product life cycle emissions" = "Product life cycle emissions"
+          "All Categories" = "all",
+          "Corporate Emissions" = "Corporate emissions",
+          "Product Life Cycle" = "Product life cycle emissions"
         ),
         selected = "all"
       )
     })
     
+    # Scope dropdown
     output$filter_scope <- renderUI({
       ns <- session$ns
+      
       selectInput(
         ns("scope_filter"),
         label = NULL,
-        choices = c("Scope 1", "Scope 2", "Scope 3"),
-        selected = c("Scope 1", "Scope 2", "Scope 3"),
+        choices = c(
+          "All Scopes" = "all",
+          "Scope 1" = "Scope 1",
+          "Scope 2" = "Scope 2",
+          "Scope 3" = "Scope 3"
+        ),
+        selected = "all",
         multiple = TRUE
       )
     })
@@ -182,28 +180,42 @@ data_explorer_server <- function(id, app_data) {
     # ========================================================================
     
     filtered_data <- reactive({
-      req(input$year_range, input$category_filter, input$scope_filter)
+      req(input$year_range, input$category_filter)
       
-      # Expected columns: fiscal_year, category, scope_clean, description, gross_emissions, net_emissions
-      data <- app_data$scope_totals
+      # Load the category totals data (has all the info we need)
+      data <- app_data$category_totals
       
+      validate(
+        need(!is.null(data), "Data is not available (category_totals is NULL)."),
+        need(is.data.frame(data), "Data is not in a tabular format."),
+        need(nrow(data) > 0, "Data is empty.")
+      )
+      
+      # Filter by year
       data <- data %>%
-        filter(
-          fiscal_year >= input$year_range[1],
-          fiscal_year <= input$year_range[2]
-        )
+        filter(fiscal_year >= input$year_range[1],
+               fiscal_year <= input$year_range[2])
       
+      # Filter by category
       if (input$category_filter != "all") {
         data <- data %>%
           filter(category == input$category_filter)
       }
       
-      # Always filter to selected scopes (defaults to all 3)
-      data <- data %>%
-        filter(scope_clean %in% input$scope_filter)
+      # Filter by scope - handle NULL and "all" cases
+      if (!is.null(input$scope_filter) && length(input$scope_filter) > 0) {
+        if (!("all" %in% input$scope_filter)) {
+          data <- data %>%
+            filter(scope_clean %in% input$scope_filter)
+        }
+      }
       
       data
-    }) %>% bindCache(input$year_range, input$category_filter, input$scope_filter)
+    }) %>% bindCache(
+      input$year_range,
+      input$category_filter,
+      input$scope_filter
+    )
     
     # ========================================================================
     # Summary Statistics
@@ -212,14 +224,16 @@ data_explorer_server <- function(id, app_data) {
     output$summary_stats <- renderUI({
       data <- filtered_data()
       
-      n_rows <- nrow(data)
-      gross_total <- sum(data$gross_emissions, na.rm = TRUE)
-      net_total <- sum(data$net_emissions, na.rm = TRUE)
+      # Calculate stats - category_totals has gross_emissions and net_emissions columns
+      total_records <- nrow(data)
+      gross_emissions <- sum(data$gross_emissions, na.rm = TRUE)
+      net_emissions <- sum(data$net_emissions, na.rm = TRUE)
       
       div(
         class = "ui three column stackable grid",
         style = "margin: 2em 0;",
         
+        # Stat 1: Records
         div(
           class = "column",
           div(
@@ -227,15 +241,16 @@ data_explorer_server <- function(id, app_data) {
             style = "text-align: center; padding: 3em 1.5em; display: flex; flex-direction: column; justify-content: center; min-height: 200px;",
             div(
               style = "font-size: 3em; font-weight: 700; margin-bottom: 0.5em; color: #3C3C3C; line-height: 1;",
-              scales::comma(n_rows)
+              scales::comma(total_records)
             ),
             div(
               style = "font-size: 1em; font-weight: 600; color: #6C6C6C; letter-spacing: 1px;",
-              "ROWS"
+              "RECORDS"
             )
           )
         ),
         
+        # Stat 2: Gross Emissions
         div(
           class = "column",
           div(
@@ -243,15 +258,16 @@ data_explorer_server <- function(id, app_data) {
             style = "text-align: center; padding: 3em 1.5em; display: flex; flex-direction: column; justify-content: center; min-height: 200px;",
             div(
               style = glue("font-size: 3em; font-weight: 700; margin-bottom: 0.5em; color: {COLORS$primary}; line-height: 1;"),
-              format_emissions(gross_total)
+              format_emissions(gross_emissions)
             ),
             div(
               style = "font-size: 1em; font-weight: 600; color: #6C6C6C; letter-spacing: 1px;",
-              "GROSS TOTAL"
+              "GROSS EMISSIONS"
             )
           )
         ),
         
+        # Stat 3: Net Emissions  
         div(
           class = "column",
           div(
@@ -259,11 +275,11 @@ data_explorer_server <- function(id, app_data) {
             style = "text-align: center; padding: 3em 1.5em; display: flex; flex-direction: column; justify-content: center; min-height: 200px;",
             div(
               style = glue("font-size: 3em; font-weight: 700; margin-bottom: 0.5em; color: {COLORS$success}; line-height: 1;"),
-              format_emissions(net_total)
+              format_emissions(net_emissions)
             ),
             div(
               style = "font-size: 1em; font-weight: 600; color: #6C6C6C; letter-spacing: 1px;",
-              "NET TOTAL"
+              "NET EMISSIONS"
             )
           )
         )
@@ -277,49 +293,69 @@ data_explorer_server <- function(id, app_data) {
     output$data_table <- renderReactable({
       data <- filtered_data()
       
+      # Prepare display data - using category_totals structure
+      if (!"scope_clean" %in% names(data) && "scope" %in% names(data)) {
+        data <- data %>% mutate(scope_clean = scope)
+      }
+
       display_data <- data %>%
         select(
-          Year = fiscal_year,
+          `Year` = fiscal_year,
           Category = category,
           Scope = scope_clean,
           Description = description,
-          `Gross emissions` = gross_emissions,
-          `Net emissions` = net_emissions
+          `Gross Emissions` = gross_emissions,
+          `Net Emissions` = net_emissions
         ) %>%
         mutate(
-          `Gross emissions` = round(`Gross emissions`, 0),
-          `Net emissions` = round(`Net emissions`, 0)
+          `Gross Emissions` = round(`Gross Emissions`, 0),
+          `Net Emissions` = round(`Net Emissions`, 0)
         )
       
       reactable(
         display_data,
         searchable = TRUE,
-        defaultSorted = "Year",
-        defaultSortOrder = "asc",
+        filterable = FALSE,
         defaultPageSize = 20,
         striped = TRUE,
         highlight = TRUE,
         bordered = TRUE,
         
+        # Column definitions
         columns = list(
-          Year = colDef(width = 90, align = "center"),
-          Category = colDef(minWidth = 200),
-          Scope = colDef(width = 120, align = "center"),
-          Description = colDef(minWidth = 260),
-          `Gross emissions` = colDef(
-            width = 170,
-            align = "right",
-            format = colFormat(separators = TRUE),
-            cell = function(value) formatC(value, format = "f", big.mark = ",", digits = 0)
+          Year = colDef(
+            width = 80,
+            align = "center"
           ),
-          `Net emissions` = colDef(
-            width = 170,
+          Category = colDef(
+            width = 180
+          ),
+          Scope = colDef(
+            width = 100,
+            align = "center"
+          ),
+          Description = colDef(
+            minWidth = 200
+          ),
+          Type = colDef(
+            width = 140,
+            align = "center"
+          ),
+          Emissions = colDef(
+            width = 130,
             align = "right",
-            format = colFormat(separators = TRUE),
-            cell = function(value) formatC(value, format = "f", big.mark = ",", digits = 0)
+            format = colFormat(separators = TRUE, suffix = " tCO₂e"),
+            style = function(value) {
+              if (value < 0) {
+                list(color = COLORS$success, fontWeight = "600")
+              } else {
+                list(color = COLORS$text_dark)
+              }
+            }
           )
         ),
         
+        # Styling
         theme = reactableTheme(
           borderColor = "#E0E0E0",
           stripedColor = "#F8F9FA",
@@ -335,7 +371,7 @@ data_explorer_server <- function(id, app_data) {
     })
     
     # ========================================================================
-    # Download Handler (filtered view)
+    # Download Handler
     # ========================================================================
     
     output$download_csv <- downloadHandler(

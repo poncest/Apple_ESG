@@ -5,9 +5,9 @@ account: 0l6jpd-steven-ponce
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 16343396
-bundleId: 11353319
+bundleId: 11353794
 url: https://0l6jpd-steven-ponce.shinyapps.io/Apple_ESG/
 version: 1
 asMultiple: FALSE
 asStatic: FALSE
-ignoredFiles: _initial_setup/00_data_preparation.R|_initial_setup/00_setup.R|_initial_setup/00_setup_appsilon.R
+ignoredFiles: _initial_setup/00_data_preparation.R|_initial_setup/00_setup.R|_initial_setup/00_setup_appsilon.R|screenshots/data_explorer.png|screenshots/emissions_reality.png|screenshots/executive_brief.png|screenshots/progress_sources.png|screenshots/risk_lens.png
