@@ -62,7 +62,7 @@ By applying risk-based frameworks and consulting methodologies to publicly avail
 ## II. Dataset Summary
 
 | Attribute | Details |
-|------------------------------------|------------------------------------|
+|----|----|
 | **Source** | Apple Environmental Progress Reports via Maven Analytics |
 | **Time Period** | Fiscal Years 2015–2022 |
 | **Scope Coverage** | Scope 1, 2, and 3 emissions across corporate and product life cycle |
@@ -112,37 +112,15 @@ By applying risk-based frameworks and consulting methodologies to publicly avail
 
 ### Dashboard Structure
 
-**Tab 1: Executive Brief**
-- Three strategic insights synthesized from the data
-- High-level KPIs (emissions change, intensity improvement, Scope 3 dominance)
-- Risk callout highlighting strategic dependencies
-- Supporting chart (Gross vs. Net emissions trend)
+**Tab 1: Executive Brief** - Three strategic insights synthesized from the data - High-level KPIs (emissions change, intensity improvement, Scope 3 dominance) - Risk callout highlighting strategic dependencies - Supporting chart (Gross vs. Net emissions trend)
 
-**Tab 2: Emissions Reality Check**
-- Key takeaway box with consulting-style summary
-- Four summary metrics (baseline, current, offset usage, revenue growth)
-- Emissions by scope (stacked bar showing Scope 3 dominance)
-- Side-by-side intensity and revenue trends
-- Year-over-year change visualization
+**Tab 2: Emissions Reality Check** - Key takeaway box with consulting-style summary - Four summary metrics (baseline, current, offset usage, revenue growth) - Emissions by scope (stacked bar showing Scope 3 dominance) - Side-by-side intensity and revenue trends - Year-over-year change visualization
 
-**Tab 3: Where Progress Lives**
-- Corporate vs. Product Life Cycle split
-- Top Scope 3 emission sources
-- iPhone carbon footprint improvement trend
-- Controllability analysis grid (High/Medium/Low control framework)
+**Tab 3: Where Progress Lives** - Corporate vs. Product Life Cycle split - Top Scope 3 emission sources - iPhone carbon footprint improvement trend - Controllability analysis grid (High/Medium/Low control framework)
 
-**Tab 4: Risk & Tradeoff Lens**
-- Risk matrix scatter plot (Controllability × Impact)
-- Interactive scenario analysis ("What if Scope 3 stalls?")
-- Primary risks vs. Strategic options comparison
-- Leadership tradeoffs table with time horizons
-- Recommended approach synthesis
+**Tab 4: Risk & Tradeoff Lens** - Risk matrix scatter plot (Controllability × Impact) - Interactive scenario analysis ("What if Scope 3 stalls?") - Primary risks vs. Strategic options comparison - Leadership tradeoffs table with time horizons - Recommended approach synthesis
 
-**Tab 5: Data Explorer**
-- Interactive reactable with year/category/scope filters
-- Summary statistics (records, gross emissions, net emissions)
-- CSV download for further analysis
-- Full data transparency for analyst deep-dives
+**Tab 5: Data Explorer** - Interactive reactable with year/category/scope filters - Summary statistics (records, gross emissions, net emissions) - CSV download for further analysis - Full data transparency for analyst deep-dives
 
 ------------------------------------------------------------------------
 
@@ -151,7 +129,7 @@ By applying risk-based frameworks and consulting methodologies to publicly avail
 ### Headline Findings
 
 | Metric | Value | Context |
-|------------------------|------------------------|------------------------|
+|----|----|----|
 | Gross Emissions Reduction | –46% (FY2015–FY2022, gross emissions) | Alongside +69% revenue growth |
 | Emissions Intensity Improvement | -68% | From 177 to 56 tCO₂e/\$M revenue |
 | Scope 3 Contribution | \~99% (FY2022) | Value chain dominates footprint |
