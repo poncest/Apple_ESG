@@ -80,31 +80,36 @@ By applying risk-based frameworks and consulting methodologies to publicly avail
 
 ------------------------------------------------------------------------
 
-## III. Dashboard Architecture
+## Dashboard Preview
 
-### Design Philosophy
+### Executive Brief
 
-**Consulting-Grade Communication** — Lead with strategic insights, support with data, avoid jargon
+![Executive Brief showing strategic insights, KPIs, and risk callout.](screenshots/executive_brief.png)
 
-**Risk-Based Frameworks** — Controllability analysis, scenario planning, strategic option evaluation
+### Risk & Tradeoff Lens
 
-**Progressive Disclosure** — Executive summary → detailed analysis → risk assessment → raw data access
+![Risk matrix with controllability analysis and scenario planning.](screenshots/risk_lens.png)
 
-**Modern Professional Aesthetic** — Forest green/charcoal color scheme, clean typography, enterprise UI patterns
+### Emissions Reality Check
 
-### Dashboard Structure
+![Detailed emissions analysis with scope breakdown and trends.](screenshots/emissions_reality.png)
 
-**Tab 1: Executive Brief** - Three strategic insights synthesized from the data - High-level KPIs (emissions change, intensity improvement, Scope 3 dominance) - Risk callout highlighting strategic dependencies - Supporting chart (Gross vs. Net emissions trend)
+*Additional tabs: Where Progress Lives (controllability framework), Data Explorer (interactive filtering)*
 
-**Tab 2: Emissions Reality Check** - Key takeaway box with consulting-style summary - Four summary metrics (baseline, current, offset usage, revenue growth) - Emissions by scope (stacked bar showing Scope 3 dominance) - Side-by-side intensity and revenue trends - Year-over-year change visualization
-
-**Tab 3: Where Progress Lives** - Corporate vs. Product Life Cycle split - Top Scope 3 emission sources - iPhone carbon footprint improvement trend - Controllability analysis grid (High/Medium/Low control framework)
-
-**Tab 4: Risk & Tradeoff Lens** - Risk matrix scatter plot (Controllability × Impact) - Interactive scenario analysis ("What if Scope 3 stalls?") - Primary risks vs. Strategic options comparison - Leadership tradeoffs table with time horizons - Leadership synthesis and tradeoff framing
-
-**Tab 5: Data Explorer** - Interactive reactable with year/category/scope filters - Summary statistics (records, gross emissions, net emissions) - CSV download for further analysis - Full data transparency for analyst deep-dives
-
-------------------------------------------------------------------------
+|  |
+|:-----------------------------------------------------------------------|
+| ## III. Dashboard Architecture |
+| ### Design Philosophy |
+| **Consulting-Grade Communication** — Lead with strategic insights, support with data, avoid jargon |
+| **Risk-Based Frameworks** — Controllability analysis, scenario planning, strategic option evaluation |
+| **Progressive Disclosure** — Executive summary → detailed analysis → risk assessment → raw data access |
+| **Modern Professional Aesthetic** — Forest green/charcoal color scheme, clean typography, enterprise UI patterns |
+| ### Dashboard Structure |
+| **Tab 1: Executive Brief** - Three strategic insights synthesized from the data - High-level KPIs (emissions change, intensity improvement, Scope 3 dominance) - Risk callout highlighting strategic dependencies - Supporting chart (Gross vs. Net emissions trend) |
+| **Tab 2: Emissions Reality Check** - Key takeaway box with consulting-style summary - Four summary metrics (baseline, current, offset usage, revenue growth) - Emissions by scope (stacked bar showing Scope 3 dominance) - Side-by-side intensity and revenue trends - Year-over-year change visualization |
+| **Tab 3: Where Progress Lives** - Corporate vs. Product Life Cycle split - Top Scope 3 emission sources - iPhone carbon footprint improvement trend - Controllability analysis grid (High/Medium/Low control framework) |
+| **Tab 4: Risk & Tradeoff Lens** - Risk matrix scatter plot (Controllability × Impact) - Interactive scenario analysis ("What if Scope 3 stalls?") - Primary risks vs. Strategic options comparison - Leadership tradeoffs table with time horizons - Leadership synthesis and tradeoff framing |
+| **Tab 5: Data Explorer** - Interactive reactable with year/category/scope filters - Summary statistics (records, gross emissions, net emissions) - CSV download for further analysis - Full data transparency for analyst deep-dives |
 
 ## IV. Key Insights and Findings
 
@@ -242,7 +247,7 @@ Data Analyst \| R Shiny Developer \| ESG Analytics Specialist
 ------------------------------------------------------------------------
 
 > **Project Published**: December 2025\
-> **Last Updated**: December 20, 2025\
+> **Last Updated**: December 21, 2025\
 > **Version**: 1.0.0
 
 ------------------------------------------------------------------------
