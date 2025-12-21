@@ -1,0 +1,13 @@
+name: Apple_ESG
+title: Apple_ESG
+username: 0l6jpd-steven-ponce
+account: 0l6jpd-steven-ponce
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 16343396
+bundleId: 11353319
+url: https://0l6jpd-steven-ponce.shinyapps.io/Apple_ESG/
+version: 1
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: _initial_setup/00_data_preparation.R|_initial_setup/00_setup.R|_initial_setup/00_setup_appsilon.R

@@ -1,0 +1,11 @@
+renv/library
+renv/staging
+.Rproj.user
+rsconnect
+00_setup.R
+00_setup_appsilon.R
+run_prep.R
+data_preparation.R
+screenshots/
+docs/
+_initial_setup/
