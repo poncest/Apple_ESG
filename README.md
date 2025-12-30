@@ -62,7 +62,7 @@ By applying risk-based frameworks and consulting methodologies to publicly avail
 ## II. Dataset Summary
 
 | Attribute | Details |
-|----|----|
+|------------------------------------|------------------------------------|
 | **Source** | Apple Environmental Progress Reports via Maven Analytics |
 | **Time Period** | Fiscal Years 2015–2022 |
 | **Scope Coverage** | Scope 1, 2, and 3 emissions across corporate and product life cycle |
@@ -129,7 +129,7 @@ By applying risk-based frameworks and consulting methodologies to publicly avail
 ### Headline Findings
 
 | Metric | Value | Context |
-|----|----|----|
+|------------------------|------------------------|------------------------|
 | Gross Emissions Reduction | –46% (FY2015–FY2022, gross emissions) | Alongside +69% revenue growth |
 | Emissions Intensity Improvement | -68% | From 177 to 56 tCO₂e/\$M revenue |
 | Scope 3 Contribution | \~99% (FY2022) | Value chain dominates footprint |
@@ -240,9 +240,9 @@ apple-esg-dashboard/
 ## VII. Contact and Links
 
 **Steven Ponce**\
-Data Analyst \| R Shiny Developer \| ESG Analytics Specialist
+Data Analyst \| R Shiny Developer \| Business Intelligence Specialist
 
-🔗 **Portfolio Website**: [poncest.quarto.pub](https://poncest.quarto.pub/)\
+🔗 **Portfolio Website**: [stevenponce.netlify.app](https://stevenponce.netlify.app/projects.html)\
 🐙 **GitHub**: [\@poncest](https://github.com/poncest)\
 💼 **LinkedIn**: [stevenponce](https://www.linkedin.com/in/stevenponce/)\
 🐦 **X (Twitter)**: [\@sponce1](https://x.com/sponce1)
